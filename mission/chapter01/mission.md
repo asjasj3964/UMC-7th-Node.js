@@ -64,8 +64,8 @@ CREATE TABLE mission (
     is_completed int NOT NULL,
     dday int NOT NULL,
     points int NOT NULL, 
-    created_at VARCHAR(6) NOT NULL,
-    updated_at VARCHAR(6) NOT NULL,
+    created_at datetime(6) NOT NULL,
+    updated_at datetime(6) NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (restaurant_id) REFERENCES restaurant(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
@@ -252,8 +252,8 @@ CREATE TABLE mission (
     is_completed int NOT NULL,
     dday int NOT NULL,
     points int NOT NULL,
-    created_at VARCHAR(6) NOT NULL,
-    updated_at VARCHAR(6) NOT NULL,
+    created_at datetime(6) NOT NULL,
+    updated_at datetime(6) NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (restaurant_id) REFERENCES restaurant(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
