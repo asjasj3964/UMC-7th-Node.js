@@ -64,9 +64,10 @@
 	- 사용자와 책은 likes 라는 관계(사용자가 책에 좋아요를 누를 수도 있는 관계)가 존재한다.
 	- 공지사항에 대한 알림 처리와 마케팅에 대한 알림 처리가 각각 다를 수 있다.
 		- 알림에 대한 성질은 동일하니 슈퍼타입-서브타입을 이용하여 공통된 속성을 상속 받는다. 
+    - 추가적으로, "사용자 간 차단 기능이 생기게 되어 차단 한 사용자가 누른 좋아요는 집계를 하지 않는다."라는 요구사항을 반영해 block 테이블을 생성하고 member 테이블과 1:N 관계로 연결해주었다.
 
 **워크북 공부한 후의 최종 DB 설계**
-![images/도서-대여-관리-app-DB-설계-공부-후.jpg](images/도서-대여-관리-app-DB-설계-공부-후.jpg)
+![images/도서-대여-관리-app-DB-설계-공부-후-추가수정.jpg](images/도서-대여-관리-app-DB-설계-공부-후-추가수정.jpg)
 
 **MySQL 테이블 생성**
 ```
@@ -177,6 +178,18 @@ CREATE TABLE book_hash_tag (
     FOREIGN KEY (book_id) REFERENCES book(id) ON DELETE CASCADE,
     FOREIGN KEY (hash_tag_id) REFERENCES hash_tag(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+CREATE TABLE block (
+    id INT NOT NULL AUTO_INCREMENT,
+    blocker_id INT NOT NULL,
+    blocked_id INT NOT NULL,
+    created_at datetime(6) NOT NULL,
+    updated_at datetime(6) NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (blocker_id) REFERENCES member(id) ON DELETE CASCADE,
+    FOREIGN KEY (blocked_id) REFERENCES member(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
 ```
 - ENGINE=InnoDB DEFAULT CHARSET=utf8mb3
 	- MySQL에서 테이블을 생성할 때 사용하는 옵션으로, 스토리지 엔진과 문자 인코딩 방식을 정의한다.
