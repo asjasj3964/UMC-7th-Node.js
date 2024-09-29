@@ -65,6 +65,8 @@
 	- 공지사항에 대한 알림 처리와 마케팅에 대한 알림 처리가 각각 다를 수 있다.
 		- 알림에 대한 성질은 동일하니 슈퍼타입-서브타입을 이용하여 공통된 속성을 상속 받는다. 
     - 추가적으로, "사용자 간 차단 기능이 생기게 되어 차단 한 사용자가 누른 좋아요는 집계를 하지 않는다."라는 요구사항을 반영해 block 테이블을 생성하고 member 테이블과 1:N 관계로 연결해주었다.
+    - 서브타입은 하나의 슈퍼타입만을 상속받을 수 있고 슈퍼타입:서브타입은 1:N 관계가 가능하다. 
+    - 추후 데이터 관리 및 유지보수를 위해 테이블마다 created_at, updated_at을 추가하는 게 좋다.
 
 **워크북 공부한 후의 최종 DB 설계**
 ![images/도서-대여-관리-app-DB-설계-공부-후-추가수정.jpg](images/도서-대여-관리-app-DB-설계-공부-후-추가수정.jpg)
@@ -72,117 +74,117 @@
 **MySQL 테이블 생성**
 ```
 CREATE TABLE member (
-    id INT NOT NULL AUTO_INCREMENT,
-    member_name VARCHAR(20) NOT NULL,
-    nickname VARCHAR(20) NOT NULL,
-    phone_number varchar(13) NOT NULL,
-    gender int NOT NULL,
-    created_at datetime(6) NOT NULL,
-    updated_at datetime(6) NOT NULL,
-    active int NOT NULL,
-    inactive_date datetime(6) NOT NULL,
-    PRIMARY KEY (id)
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    member_name VARCHAR(20) NOT NULL,
+    nickname VARCHAR(20) NOT NULL,
+    phone_number varchar(13) NOT NULL,
+    gender int NOT NULL,
+    created_at datetime(6) NOT NULL,
+    updated_at datetime(6) NOT NULL,
+    active int NOT NULL,
+    inactive_date datetime(6) NOT NULL,
+    PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 CREATE TABLE category (
-    id INT NOT NULL AUTO_INCREMENT,
-    title varchar(20) NOT NULL,
-    created_at datetime(6) NOT NULL,
-    updated_at datetime(6) NOT NULL,
-    PRIMARY KEY (id)
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    title varchar(20) NOT NULL,
+    created_at datetime(6) NOT NULL,
+    updated_at datetime(6) NOT NULL,
+    PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 CREATE TABLE book (
-    id INT NOT NULL AUTO_INCREMENT,
-    category_id int NOT NULL,
-    title varchar(30) NOT NULL,
-    introduction text NOT NULL,
-    created_at datetime(6) NOT NULL,
-    updated_at datetime(6) NOT NULL,
-    PRIMARY KEY (id),
-    FOREIGN KEY (category_id) REFERENCES member(id) ON DELETE CASCADE
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    category_id BIGINT NOT NULL,
+    title varchar(30) NOT NULL,
+    introduction text NOT NULL,
+    created_at datetime(6) NOT NULL,
+    updated_at datetime(6) NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (category_id) REFERENCES member(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 CREATE TABLE likes (
-    id INT NOT NULL AUTO_INCREMENT,
-    member_id int NOT NULL,
-    book_id int NOT NULL,
-    created_at datetime(6) NOT NULL,
-    updated_at datetime(6) NOT NULL,
-    PRIMARY KEY (id),
-    FOREIGN KEY (member_id) REFERENCES member(id) ON DELETE CASCADE,
-    FOREIGN KEY (book_id) REFERENCES book(id) ON DELETE CASCADE
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    member_id BIGINT NOT NULL,
+    book_id BIGINT NOT NULL,
+    created_at datetime(6) NOT NULL,
+    updated_at datetime(6) NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (member_id) REFERENCES member(id) ON DELETE CASCADE,
+    FOREIGN KEY (book_id) REFERENCES book(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 CREATE TABLE member_book (
-    id INT NOT NULL AUTO_INCREMENT,
-    member_id int NOT NULL,
-    book_id int NOT NULL,
-    created_at datetime(6) NOT NULL,
-    updated_at datetime(6) NOT NULL,
-    PRIMARY KEY (id),
-    FOREIGN KEY (member_id) REFERENCES member(id) ON DELETE CASCADE,
-    FOREIGN KEY (book_id) REFERENCES book(id) ON DELETE CASCADE
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    member_id BIGINT NOT NULL,
+    book_id BIGINT NOT NULL,
+    created_at datetime(6) NOT NULL,
+    updated_at datetime(6) NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (member_id) REFERENCES member(id) ON DELETE CASCADE,
+    FOREIGN KEY (book_id) REFERENCES book(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 CREATE TABLE alarm (
-    id INT NOT NULL AUTO_INCREMENT,
-    member_id int NOT NULL,
-    is_conformed int NOT NULL,
-    created_at datetime(6) NOT NULL,
-    updated_at datetime(6) NOT NULL,
-    PRIMARY KEY (id),
-    FOREIGN KEY (member_id) REFERENCES member(id) ON DELETE CASCADE
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    member_id BIGINT NOT NULL,
+    is_conformed int NOT NULL,
+    created_at datetime(6) NOT NULL,
+    updated_at datetime(6) NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (member_id) REFERENCES member(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 CREATE TABLE alarm_notice (
-    id INT NOT NULL AUTO_INCREMENT,
-    alarm_id int NOT NULL,
-    title varchar(20) NOT NULL,
-    body TEXT NOT NULL,
-    PRIMARY KEY (id),
-    FOREIGN KEY (alarm_id) REFERENCES alarm(id) ON DELETE CASCADE
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    alarm_id BIGINT NOT NULL,
+    title varchar(20) NOT NULL,
+    body TEXT NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (alarm_id) REFERENCES alarm(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 CREATE TABLE alarm_book_return_time (
-    id INT NOT NULL AUTO_INCREMENT,
-    alarm_id int NOT NULL,
-    title varchar(20) NOT NULL,
-    body TEXT NOT NULL,
-    PRIMARY KEY (id),
-    FOREIGN KEY (alarm_id) REFERENCES alarm(id) ON DELETE CASCADE
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    alarm_id BIGINT NOT NULL,
+    title varchar(20) NOT NULL,
+    body TEXT NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (alarm_id) REFERENCES alarm(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 CREATE TABLE alarm_marketing (
-    id INT NOT NULL AUTO_INCREMENT,
-    alarm_id int NOT NULL,
-    title varchar(20) NOT NULL,
-    body TEXT NOT NULL,
-    PRIMARY KEY (id),
-    FOREIGN KEY (alarm_id) REFERENCES alarm(id) ON DELETE CASCADE
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    alarm_id BIGINT NOT NULL,
+    title varchar(20) NOT NULL,
+    body TEXT NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (alarm_id) REFERENCES alarm(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 CREATE TABLE hash_tag (
-    id INT NOT NULL AUTO_INCREMENT,
-    title varchar(20) NOT NULL,
-    created_at datetime(6) NOT NULL,
-    updated_at datetime(6) NOT NULL,
-    PRIMARY KEY (id)
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    title varchar(20) NOT NULL,
+    created_at datetime(6) NOT NULL,
+    updated_at datetime(6) NOT NULL,
+    PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 CREATE TABLE book_hash_tag (
-    id INT NOT NULL AUTO_INCREMENT,
-    book_id INT NOT NULL,
-    hash_tag_id int NOT NULL,
-    PRIMARY KEY (id),
-    FOREIGN KEY (book_id) REFERENCES book(id) ON DELETE CASCADE,
-    FOREIGN KEY (hash_tag_id) REFERENCES hash_tag(id) ON DELETE CASCADE
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    book_id BIGINT NOT NULL,
+    hash_tag_id BIGINT NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (book_id) REFERENCES book(id) ON DELETE CASCADE,
+    FOREIGN KEY (hash_tag_id) REFERENCES hash_tag(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 CREATE TABLE block (
-    id INT NOT NULL AUTO_INCREMENT,
-    blocker_id INT NOT NULL,
-    blocked_id INT NOT NULL,
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    blocker_id BIGINT NOT NULL,
+    blocked_id BIGINT NOT NULL,
     created_at datetime(6) NOT NULL,
     updated_at datetime(6) NOT NULL,
     PRIMARY KEY (id),

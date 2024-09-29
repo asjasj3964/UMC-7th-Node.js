@@ -196,9 +196,9 @@ CREATE TABLE review_request (
 **MySQL 테이블 생성**
 ```
 CREATE TABLE map (
-    id INT NOT NULL AUTO_INCREMENT,
-    x INT NOT NULL,
-    y INT NOT NULL,
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    x BIGINT NOT NULL,
+    y BIGINT NOT NULL,
     map_location TEXT NOT NULL,
     created_at datetime(6) NOT NULL,
     updated_at datetime(6) NOT NULL,
@@ -206,14 +206,15 @@ CREATE TABLE map (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 CREATE TABLE member (
-    id INT NOT NULL AUTO_INCREMENT,
-    residence_id INT NOT NULL,
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    residence_id BIGINT NOT NULL,
     email VARCHAR(50) NOT NULL,
+    phone_number varchar(15) NULL,
     member_name VARCHAR(30) NOT NULL,
     nickname VARCHAR(30) NOT NULL,
     gender INT NOT NULL,
     birth varchar(10) NOT NULL,
-    points INT DEFAULT 0 NOT NULL,
+    points BIGINT DEFAULT 0 NOT NULL,
     created_at datetime(6) NOT NULL,
     updated_at datetime(6) NOT NULL,
     active INT NOT NULL,
@@ -223,7 +224,7 @@ CREATE TABLE member (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 CREATE TABLE food_kind (
-    id INT NOT NULL AUTO_INCREMENT,
+    id BIGINT NOT NULL AUTO_INCREMENT,
     kind VARCHAR(10) NOT NULL,
     created_at datetime(6) NOT NULL,
     updated_at datetime(6) NOT NULL,
@@ -231,9 +232,9 @@ CREATE TABLE food_kind (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
   
 CREATE TABLE member_food_kind (
-    id INT NOT NULL AUTO_INCREMENT,
-    member_id INT NOT NULL,
-    food_kind_id INT NOT NULL,
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    member_id BIGINT NOT NULL,
+    food_kind_id BIGINT NOT NULL,
     created_at datetime(6) NOT NULL,
     updated_at datetime(6) NOT NULL,
     PRIMARY KEY (id),
@@ -242,8 +243,8 @@ CREATE TABLE member_food_kind (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 CREATE TABLE restaurant (
-    id INT NOT NULL AUTO_INCREMENT,
-    location_id INT NOT NULL,
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    location_id BIGINT NOT NULL,
     restaurant_name VARCHAR(30) NOT NULL,
     introduction TEXT NOT NULL,
     start_time TIMESTAMP NOT NULL,
@@ -256,14 +257,14 @@ CREATE TABLE restaurant (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 CREATE TABLE mission (
-    id INT NOT NULL AUTO_INCREMENT,
-    restaurant_id INT NOT NULL,
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    restaurant_id BIGINT NOT NULL,
     mission_name VARCHAR(30) NOT NULL,
     introduction TEXT NOT NULL,
-    ongoing int NOT NULL,
-    is_completed int NOT NULL,
-    dday int NOT NULL,
-    points int NOT NULL,
+    ongoing INT NOT NULL,
+    is_completed INT NOT NULL,
+    dday INT NULL,
+    points BIGINT NOT NULL,
     created_at datetime(6) NOT NULL,
     updated_at datetime(6) NOT NULL,
     PRIMARY KEY (id),
@@ -271,9 +272,9 @@ CREATE TABLE mission (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 CREATE TABLE member_mission (
-    id INT NOT NULL AUTO_INCREMENT,
-    member_id INT NOT NULL,
-    mission_id INT NOT NULL,
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    member_id BIGINT NOT NULL,
+    mission_id BIGINT NOT NULL,
     created_at datetime(6) NOT NULL,
     updated_at datetime(6) NOT NULL,
     PRIMARY KEY (id),
@@ -282,9 +283,9 @@ CREATE TABLE member_mission (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 CREATE TABLE review (
-    id INT NOT NULL AUTO_INCREMENT,
-    member_id INT NOT NULL,
-    restaurant_id INT NOT NULL,
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    member_id BIGINT NOT NULL,
+    restaurant_id BIGINT NOT NULL,
     rating decimal(2, 1) NOT NULL,
     content TEXT NOT NULL,
     created_at datetime(6) NOT NULL,
@@ -295,9 +296,9 @@ CREATE TABLE review (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 CREATE TABLE reply (
-    id INT NOT NULL AUTO_INCREMENT,
-    member_id INT NOT NULL,
-    review_id INT NOT NULL,
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    member_id BIGINT NOT NULL,
+    review_id BIGINT NOT NULL,
     writer varchar(30) NOT NULL,
     content TEXT NOT NULL,
     created_at datetime(6) NOT NULL,
@@ -308,8 +309,8 @@ CREATE TABLE reply (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 CREATE TABLE inquiry (
-    id INT NOT NULL AUTO_INCREMENT,
-    member_id INT NOT NULL,
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    member_id BIGINT NOT NULL,
     title VARCHAR(30) NOT NULL,
     content TEXT NOT NULL,
     is_conformed INT NOT NULL,
@@ -320,9 +321,9 @@ CREATE TABLE inquiry (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 CREATE TABLE food_kind_restaurant (
-    id INT NOT NULL AUTO_INCREMENT,
-    food_kind_id INT NOT NULL,
-    restaurant_id INT NOT NULL,
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    food_kind_id BIGINT NOT NULL,
+    restaurant_id BIGINT NOT NULL,
     created_at datetime(6) NOT NULL,
     updated_at datetime(6) NOT NULL,
     PRIMARY KEY (id),
@@ -331,10 +332,10 @@ CREATE TABLE food_kind_restaurant (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 CREATE TABLE image (
-    id INT NOT NULL AUTO_INCREMENT,
-    restaurant_id INT NOT NULL,
-    inquiry_id INT NOT NULL,
-    review_id INT NOT NULL,
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    restaurant_id BIGINT NOT NULL,
+    inquiry_id BIGINT NOT NULL,
+    review_id BIGINT NOT NULL,
     image_url TEXT NOT NULL,
     created_at datetime(6) NOT NULL,
     updated_at datetime(6) NOT NULL,
@@ -345,8 +346,8 @@ CREATE TABLE image (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 CREATE TABLE alarm (
-    id INT NOT NULL AUTO_INCREMENT,
-    member_id INT NOT NULL,
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    member_id BIGINT NOT NULL,
     is_conformed INT NOT NULL,
     created_at datetime(6) NOT NULL,
     updated_at datetime(6) NOT NULL,
@@ -355,8 +356,8 @@ CREATE TABLE alarm (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 CREATE TABLE alarm_new_mission (
-    id INT NOT NULL AUTO_INCREMENT,
-    alarm_id INT NOT NULL,
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    alarm_id BIGINT NOT NULL,
     title VARCHAR(30) NOT NULL,
     body TEXT NOT NULL,
     PRIMARY KEY (id),
@@ -364,14 +365,13 @@ CREATE TABLE alarm_new_mission (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 CREATE TABLE alarm_review_request (
-    id INT NOT NULL AUTO_INCREMENT,
-    alarm_id INT NOT NULL,
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    alarm_id BIGINT NOT NULL,
     title VARCHAR(30) NOT NULL,
     body TEXT NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (alarm_id) REFERENCES alarm(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
-
 ```
 - 무슨 이유에선지 모르겠지만 ER-다이어그램에서 1:N 관계일 경우엔 N에 해당하는 테이블에 외래키를 포함시키는 것으로 간주하고 테이블엔 따로 표시하지 않는(?) 것으로 착각하고 있었다. 
 - 한 음식점에 여러 개의 미션이 주어질 수도 있다. 즉, 음식점:미션 = 1:N
