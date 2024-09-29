@@ -192,7 +192,7 @@ CREATE TABLE review_request (
 #### 스터디 후의 DB 설계
 
 **ERD 설계**
-![images/가게-방문-미션-포인트-서비스-스터디-후](images/가게-방문-미션-포인트-서비스-스터디-후.jpg)
+![images/가게-방문-미션-포인트-서비스-스터디-후-추가수정](images/가게-방문-미션-포인트-서비스-스터디-후-추가수정.jpg)
 **MySQL 테이블 생성**
 ```
 CREATE TABLE map (
