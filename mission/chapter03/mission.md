@@ -164,8 +164,8 @@
           "message": "string",
           "result": [
         	  "restaurantName": "string",
-        	  "completedMission": {
-        		  "completedMissionId": 1,
+        	  "ongoingMission": {
+        		  "ongoingMissionId": 1,
         		  "introduction": "string",
         		  "points": 500
         	  }
@@ -260,3 +260,20 @@
       }
     }
     ```
+
+**스터디 후 더 공부한 내용**
+1. Access token을 Bearer로 감싸서 보내는 이유
+    - 간단하고 안전한 전송 방식
+        - Bearer 토큰은 HTTP 요청의 Authorization 헤더에 포함되어 서버로 전달되는데 이는 별도의 복잡한 인증 과정 없이 토큰을 소지한 사람만이 리소스에 접근할 수 있도록 한다.
+            - ex. Authorization: Bearer <access_token>
+    - OAuth 2.0 표준 준수
+        - OAuth 2.0 표준은 Bearer 토큰을 사용하여 액세스 권한을 부여하고 이를 통해 서버는 해당 토큰의 유효성을 확인할 수 있다.
+    - 보안 강화 및 유효성 검증
+        - Bearer 방식은 주로 SSL/TLS와 같은 안전한 통신 프로토콜과 함께 사용되어 토큰이 중간에서 도청되는 위험을 방지한다.
+    - 인증 간소화
+        - 클라이언트는 별도의 사용자 인증 정보를 매번 입력할 필요 없이 서버에 Bearer 토큰을 전송하기만 하면 된다. 서버는 해당 토큰의 유효성만 확인하면 그 클라이언트의 신원을 확인한 것으로 간주한다.
+2. 데이터베이스에서 id를 AUTO_INCREMENT(고유한 숫자 식별자(ID)를 자동으로 생성)로 설정했을 경우, Request Body에 id 필드를 넣어 값을 지정해주어야 되는지
+    - Request Body에 id 포함 여부
+        - **포함하지 않아야 한다**. 데이터베이스가 새로운 레코드가 생성될 때마다 자동으로 고유한 id를 부여하기 때문에 클라이언트가 직접 id를 지정할 필요가 없다.
+    - Response Body에 id 포함 여부
+        - **포함하는 것이 좋다**. 새로운 리소스가 생성된 후, 서버는 데이터베이스에 의해 생성된 id를 응답으로 반환하는 것이 일반적이다. 클라이언트가 생성된 리소스의 id를 확인하고 이후에 이를 참조하거나 사용할 수 있도록 도와준다.
