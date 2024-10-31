@@ -806,3 +806,12 @@
         }
         ```
         - 엔티티를 DTO로 변환하는 함수
+            ```javascript
+            function toMemberDTO(member) {
+                return new MemberDTO(
+                    member.nickname,
+                    member.locationAddress,
+                    member.points
+                );
+            }
+            ```
