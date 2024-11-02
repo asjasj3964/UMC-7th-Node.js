@@ -130,8 +130,10 @@
             </div>`;
             console.log(html);
             // 출력
-            // <h1>Hello, I am Wenty and 25 years old.</h1>
-            // <p>My favorite movie is "Inception".</p>
+            // <div>
+            //  <h1>Hello, I am Wenty and 25 years old.</h1>
+            //  <p>My favorite movie is "Inception".</p>
+            // </div>
             ```
         2. **화살표 함수**
             - function 키워드를 사용하지 않으며 파라미터가 하나이면 괄호를 생략할 수 있고 함수의 본문이 한 줄이면 중괄호 {}와 return 키워드도 생략할 수 있다.  
