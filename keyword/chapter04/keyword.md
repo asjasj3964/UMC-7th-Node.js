@@ -126,7 +126,7 @@
             const html = `
             <div>
             	<h1>Hello, I am ${name} and ${age} years old.</h1>
-            	<p>My favorite movie is "Inception"`</p>
+            	<p>My favorite movie is "Inception"</p>
             </div>`;
             console.log(html);
             // 출력
@@ -141,26 +141,26 @@
                 ``` 
             - this가 없다. 자신이 정의된 위치의 상위 스코프에 this를 상속한다.
                 ```javascript
-                function Person(){
+                function Student(){
                 	this.age = 0; // 화살표 함수에서 this는 상위 스코프를 참조한다.
                 	setInterval(() => {
                 		this.age++;
                 		console.log(this.age);
                 	}, 1000);
                 }
-                const person = new Person(); // 1초마다 age가 증가하며 출력된다.
+                const student = new Student(); // 1초마다 age가 증가하며 출력된다.
                 ```
-                - 화살표 함수 내부의 this는 Person 생성자의 this와 동일하다.
+                - 화살표 함수 내부의 this는 student 생성자의 this와 동일하다.
                 - 일반 함수의 경우 setInterval 내부에서 this가 전역 객체(window)를 참조했을 것이다.
                     - window 객체: 브라우저 환경에서의 전역 객체로, 모든 전역 변수와 함수는 기본적으로 window 객체의 속성으로 저장된다
             - new 연산자로 호출할 수 없다.
                 - 화살표 함수는 생성자 함수로 사용할 수 없다.
                 - this가 없기 때문에 객체 인스턴스를 생성하는 데 적합하지 않다.
                 ```javascript
-                const Person = (name) => {
+                const Student = (name) => {
                 	this.name = name;
                 }; // 오류 발생: 화살표 함수는 생성자 함수로 사용할 수 없다.
-                const Wenty = new Person('Wenty');
+                const Wenty = new Student('Wenty');
                 ```
             - 화살표 함수는 arguments 객체를 지원하지 않는다.
                 - arguments 객체: 함수에 전달된 모든 인수에 접근할 수 있는 유사 배열
@@ -172,6 +172,7 @@
                 	console.log(arguments); // 오류: 화살표 함수는 arguments를 지원하지 않는다.
                 };
                 showArgs(1, 2, 3);
+
                 // Rest Parameter 사용
                 const showArgs = (...args) => {
                 	console.log(args); // 출력: [1, 2, 3]
@@ -189,17 +190,17 @@
                 const name = "Wenty";
                 const key = "university";
                 const value = "Inha"
-                const person = {
+                const student = {
                 	name, // name: name 생략
                 	hello(){ // function 키워드 생략
                 		console.log(`Hello, my name is ${this.name}.`);
-                	}
+                	},
                 	[key]: value // key 변수의 값이 속성명이 된다. { university: 'Inha' }
                 };
-                console.log(person); 
+                console.log(student); 
                 // 출력: { name: 'Wenty', hello: [Function: hello], university: 'Inha' }
                 ```
-        4. 구조 분해
+        4. **구조 분해**
             1. **배열 구조 분해**
                 - 배열의 각 요소를 한 번에 여러 변수에 할당할 수 있다.  
                     ```javascript
@@ -265,6 +266,7 @@
                     export function hello (){
                     	console.log(`Hello, ${name}.`);
                     }
+                    
                     // 다른 파일
                     // utils.js에서 named export된 항목 가져오기
                     import { name, hello } from './utils.js';
@@ -275,22 +277,23 @@
             - 자바스크립트에서 변수를 선언할 때 사용하는 var, let, const는 각각 스코프(변수가 유효한 범위)와 재할당 가능 여부가 다르다.
             1. var
                 - 같은 이름으로 변수를 여러 번 선언해도 오류가 발생하지 않는다. (중복 선언 가능)
-                - 함수 스코프(Function Scope): 변수가 선언된 함수 내에서만 유효하다.
-                - 호이스팅(Hoisting): 선언이 코드 상단으로 끌어올려진다.
+                - 함수 스코프(Function Scope) -> 변수가 선언된 함수 내에서만 유효하다.
+                - 호이스팅 -> 선언이 코드 상단으로 끌어올려진다.
+                    - 호이스팅(Hoisting): 변수와 함수 선언이 코드 실행 전에 스코프의 최상단으로 끌어올려지는 것처럼 동작하는 특징
             2. let, const
                 1. let
-                    - 블록 스코프(Block Scope): 변수가 선언된 블록({}) 내에서만 유효하다.
+                    - 블록 스코프(Block Scope) -> 변수가 선언된 블록({}) 내에서만 유효하다.
                     - 같은 이름의 변수를 여러 번 선언하면 오류가 발생한다. (중복 선언 불가능)
                 2. const
-                    - 블록 스코프: 변수가 선언된 블록 내에서만 유효하다.
-                    - 선언과 동시에 초기화: 선언할 때 초기값을 반드시 할당해야 한다.
+                    - 블록 스코프 -> 변수가 선언된 블록 내에서만 유효하다.
+                    - 선언과 동시에 초기화 -> 선언할 때 초기값을 반드시 할당해야 한다.
                     - const로 선언된 객체와 배열의 참조는 변경할 수 없지만 내부 값은 수정할 수 있다.
                         ```javascript
-                        const person = { name: 'John' };
-                        person.name = 'Doe';  // 객체의 속성은 수정 가능
-                        console.log(person);  // 출력: { name: 'Doe' }
+                        const person = { name: 'Wenty' };
+                        person.name = 'SeongJin';  // 객체의 속성은 수정 가능
+                        console.log(person);  // 출력: { name: 'SeongJin' }
                         ```
-                - 호이스팅: 선언이 끌어올려지지만 초기화되지 않아서 사용할 수 없다. 참조 오류(Reference Error)가 발생한다.
+                - 호이스팅 -> 선언이 끌어올려지지만 초기화되지 않아서 사용할 수 없다. 참조 오류(Reference Error)가 발생한다.
                     ```javascript
                     console.log(a);  // 출력: undefined (var는 호이스팅됨)
                     var a = 10;
@@ -302,12 +305,12 @@
             - 배열이나 객체를 전개해 새로운 배열이나 객체를 쉽게 생성할 수 있다.
             - 객체 리터럴이나 배열 리터럴 내부에서 주로 사용된다.
                 ```javascript
-                let obj1 = { name: 'melon', age: 20 };
+                let obj1 = { name: 'Wenty', age: 25 };
                 let obj2 = { ...obj1 }; // 객체 obj1의 모든 속성을 새 객체로 복사한다.
                 let obj3 = { ...obj1, nationality: 'KR' }; // obj1의 모든 속성 복사 후, nationality: 'KR' 속성 추가
                 console.log(obj1 === obj2);  // false
-                console.log(obj2);  // { name: 'melon', age: 20 }
-                console.log(obj3);  // { name: 'melon', age: 20, nationality: 'KR' }
+                console.log(obj2);  // { name: 'Wenty', age: 25 }
+                console.log(obj3);  // { name: 'Wenty', age: 25, nationality: 'KR' }
                 ```
                 - obj1 === obj2가 false인 이유
                     - 객체는 참조 타입이므로 obj2는 obj1의 복사본일 뿐 서로 같은 객체가 아니다.
@@ -343,6 +346,7 @@
                 import { name as username, hello } from './utils.js'; // (1)
                 console.log(username); // 출력: Wenty
                 hello(); // 출력: Hello, Wenty
+
                 // default export 가져오기
                 import sayGoodByt from './utils.js'; // (2)
                 sayGoodbye(); // 출력: Goodbye
@@ -375,8 +379,8 @@
                 		console.error(error); 
                 	});
                 ```
-                - **then()**: 작업이 성공(fulfilled)했을 때 실행된다.
-                - **catch()**: 작업이 실패(rejected)했을 때 실행된다.
+                - then(): 작업이 성공(fulfilled)했을 때 실행된다.
+                - catch(): 작업이 실패(rejected)했을 때 실행된다.
             - **여러 비동기 작업 처리 (Promise 체이닝)**
                 - Promise는 체이닝을 통해 **여러 비동기 작업을 순차적으로 처리**할 수 있다. 이로 인해 콜백 헬을 피할 수 있다.
                 ```javascript
@@ -401,7 +405,7 @@
                 	console.error('작업 중 오류 발생:', error);
                 });
                 ```
-                - **then()** 메서드를 체인으로 연결해 순차적으로 비동기 작업을 실행한다.
+                - then() 메서드를 체인으로 연결해 순차적으로 비동기 작업을 실행한다.
                 - 각 작업의 결과를 다음 작업으로 전달할 수 있다.
                 - 에러가 발생하면 catch()에서 한 번에 처리한다.
             - **여러 비동기 작업을 병렬로 처리한다. (Promise.all)**
@@ -421,6 +425,98 @@
                 ```
                 - Promise.all()은 모든 작업이 완료될 때까지 기다렸다가 결과를 배열로 반환한다.
                 - 하나라도 실패하면 catch()로 이동해 에러를 처리한다.
+        9. **Class**
+            - 클래스는 객체를 생성하기 위한 템플릿(틀)로, 객체 지향 프로그래밍(OOP, Object-Oriented Programming) 패러다임을 지원한다.  
+            - ES5 이전에는 클래스 개념이 없었고, 함수와 프로토타입(prototype)을 이용해 객체를 생성해야 했다.  
+            - ES5의 클래스-like 구조 (프로토타입 사용)
+                - ES6 이전에는 생성자 함수와 프로토타입을 사용해 객체를 생성하고 메서드를 정의했다.
+                    ```javascript 
+                    function Student(name, age) { // 생성자 함수
+                        this.name = name;   
+                        this.age = age; 
+                    }  
+                    Student.prototype.hello = function () { // 프로토타입에 메서드 정의 
+                        console.log(`Hello, my name is ${this.name} and I am ${this.age} years old.`); 
+                    };  
+                    const wenty = new Student('Wenty', 25); // Student 객체 생성 
+                    wenty.hello(); // 출력: Hello, my name is Wenty and I am 25 years old.
+                    ```
+                    - 메서드를 프로토타입에 명시적으로 추가해야 한다.
+	                - 객체 생성 방식이 클래스 문법에 비해 직관적이지 않다.
+            - ES6의 class
+                - 클래스 문법은 내부적으로 프로토타입 기반으로 동작한다.
+                    - ES6 클래스는 프로토타입을 감싸는 문법적 설탕(Syntactic Sugar)이다.
+                ```javascript
+                class Student {    
+                    constructor(name, age) { // 생성자 함수
+                        this.name = name;     
+                        this.age = age;   
+                    }   
+                    hello() { // 메서드 정의      
+                        console.log(`Hello, my name is ${this.name} and I am ${this.age} years old.`);   
+                    } 
+                }  
+                const wenty = new Student('Wenty', 25); // Student 객체 생성
+                wenty.hello(); // 출력: Hello, my name is Wenty and I am 25 years old.
+                ```
+                - class 키워드를 사용해 클래스를 정의한다.
+		        - constructor 메서드: 클래스의 생성자 함수로, 객체가 생성될 때 호출된다.
+		        - 메서드는 클래스 내부에 간단히 정의할 수 있다(프로토타입을 직접 수정할 필요가 없다).
+		        - 객체는 new 키워드를 사용해 생성된다.
+            - 클래스는 생성자 함수(constructor), 상속(extends), 정적 메서드(static), Getter/Setter 등의 기능을 제공한다.
+                1. **상속(Inheritance)**
+		            - extends 키워드를 사용해 부모 클래스의 기능을 자식 클래스에서 사용할 수 있다.
+                    ```javascript
+                    class Student {   
+                        constructor(name) {     
+                            this.name = name;   
+                        }    
+                        hello() {     
+                            console.log(`${this.name} says hello.`);   
+                        }
+                    }  
+                    class Wenty extends Student { // Student 자식 클래스 Wenty
+                        hello() {     
+                            console.log(`Hello, my name is ${this.name}.`);   
+                        } 
+                    }  
+                    const wenty = new Wenty('Wenty'); 
+                    wenty.hello(); // 출력: Hello, my name is Wenty.
+                    ```
+                    - Wenty 클래스는 Student 클래스를 상속받았다.
+                    - hello() 메서드를 오버라이딩(재정의)해 고유한 동작을 구현한다.
+                2. **정적 메서드 (Static Method)**
+		            - static 키워드를 사용하면 객체가 아닌 클래스 자체에서 호출할 수 있는 메서드를 정의할 수 있다.
+                    ```javascript
+                    class cal {   
+                        static add(a, b) {     
+                            return a + b;   
+                        } 
+                    }  
+                    console.log(cal.add(2, 3)); // 출력: 5
+                    ```
+                    - 정적 메서드는 클래스 이름으로 호출한다(객체 생성 없이 사용).
+                3. **Getter와 Setter**
+                    - 클래스에서는 getter와 setter를 사용해 속성에 접근하고 값을 설정할 수 있다.
+                    ```javascript
+                    class Student {   
+                        constructor(name) {     
+                            this._name = name; 
+                            // name을 name 프라이빗 변수(_name, 클래스 내부에서만 접근 가능)로 저장   
+                        }    
+                        get name() { // getter 메서드      
+                            return this._name;   
+                        }    
+                        set name(newName) { // setter 메서드    
+                            this._name = newName;   
+                        } 
+                    }  
+                    const wenty = new Student('Wenty'); // Student 객체 생성
+                    console.log(wenty.name); // 출력: Wenty  
+                    wenty.name = 'SeongJin'; 
+                    console.log(wenty.name); // 출력: SeongJin
+                    ```
+                    - Getter는 속성 값을 가져올 때, Setter는 속성 값을 설정할 때 사용된다.
     2. **ES6를 중요시 하는 이유**
         - 간결한 문법과 기능들이 추가되어 코드를 더 명확하고 직관적으로 작성할 수 있다.
         - Promise와 async/await 도입으로 비동기 코드가 직관적으로 작성되고 에러 처리가 쉬워졌다.
@@ -522,8 +618,8 @@
             module.exports = { createMember }; // Service Layer나 Controller Layer에서 불러와 사용될 수 있다. 
             ```
     3. **MVC 패턴**
-        - MVC: Model(모델), View(뷰), Controller(컨트롤러) 이 3가지로 구분하여 응용 프로그램의 구조를 설계하는 패턴
-        - (사진)
+        - MVC: Model(모델), View(뷰), Controller(컨트롤러) 이 3가지로 구분하여 응용 프로그램의 구조를 설계하는 패턴<br>
+        ![MCC-패턴](images/MVC-패턴.jpg)
         1. **Model(모델)**
             - 데이터와 관련된 모든 로직을 담당한다.
             - 데이터베이스와 상호작용하며 비지니스 로직을 포함한다.
@@ -538,7 +634,7 @@
                         class Modle {
                         	constructor(){
                         		this.data = 0;
-                        		this.**view** = null; // 뷰를 직접 참조한다.
+                        		this.view = null; // 뷰를 직접 참조한다.
                         	}
                         	setView(view){
                         		this.view = view;  
@@ -699,13 +795,13 @@
                 Member.init( // 모델을 초기화하고 테이블의 컬럼을 정의한다. 
                   {
                     id: {
-                      **type**: DataTypes.BIGINT,
-                      **primaryKey**: true,
-                      **autoIncrement**: true,
+                      type: DataTypes.BIGINT,
+                      primaryKey: true,
+                      autoIncrement: true,
                     },
                     locationAddress: {
                       type: DataTypes.TEXT,
-                      **allowNull**: false,
+                      allowNull: false,
                     },
                     email: {
                       type: DataTypes.STRING(50),
@@ -776,6 +872,7 @@
             - 데이터를 조회, 추가, 수정, 삭제(CRUD)하는 데 사용된다.
             - 데이터베이스 테이블의 모든 컬럼을 포함한 형태로 정의된다. 즉, 데이터 조작 시 데이터베이스의 모든 필드를 한 번에 사용한다.
                 ```javascript
+                // Member 엔티티
                 class Member {
                     constructor(id, locationAddress, email, phoneNumber, memberName, nickname, gender, birth, points = 0, createdAt, updateAt, status, inactivaAt = null) {
                         this.id = id;
@@ -815,3 +912,4 @@
                 );
             }
             ```
+            - Member 객체에서 필요한 필드 nickname, locationAddress, points만 추출하여 MemberDTO 인스턴스를 생성한다. 이 정보들만을 담아 클라이언트에 응답으로 전송한다.  
