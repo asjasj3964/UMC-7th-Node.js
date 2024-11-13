@@ -1,21 +1,97 @@
 ### **📦 실습**
 ---
-1. **회원가입 API**
-    - 테스트 (curl)
+1. 회원가입 API
+    - Repository 함수
+        ```javascript
+        // 회원 데이터 삽입 (회원 등록) & 회원 ID 반환
+        export const addMember = async(data) => {
+            const member = await prisma.member.findFirst({where: {email: data.email}}); // 해당 이메일로 등록된 회원(중복 회원)이 존재하는지 확인
+            if (member){ // 해당 이메일로 등록된 회원이 있을 경우
+                return null;
+            }
+            const created = await prisma.member.create({data: data}); // 회원 생성
+            return created.id; // 생성된 회원 ID 반환
+        };
+
+        // 회원 정보 조회
+        export const getMember = async (memberId) => {
+            const member = await prisma.member.findFirstOrThrow({ where: {id: memberId}});
+            // prisma에서 member 테이블에 접근하여 해당 memberId와 일치하는, 첫 번째 레코드를 조회한다. 
+            // 해당 레코드가 없을 시 예외를 던진다(에러 발생).
+            return member;
+        };
+
+        // 음식 - 선호_음식_종류 매핑
+        export const setFavoriteFoodKind = async(memberId, favoriteFoodKindId) => {
+            await prisma.memberFavoriteFoodKind.create({
+                data:{ // 새 레코드의 필드와 값을 지정한다. 
+                    memberId: memberId,
+                    foodKindId: favoriteFoodKindId
+                },
+            });
+        };
+
+        // 회원 - 선호_음식_종류 반환
+        export const getMemberFavoriteFoodKindByMemberId = async (memberId) => {
+            const favoriteFoodKinds = await prisma.memberFavoriteFoodKind.findMany({ // 여러 레코드 조회, 조건에 맞는 모든 레코드를 배열 형태로 반환
+                select: { // 반환할 필드 명시
+                    id: true,
+                    memberId: true,
+                    foodKindId: true,
+                    foodKind: true, // 참조하는 foodKind 테이블
+                },
+                where: { memberId: memberId },
+                orderBy: {foodKindId: "asc"}, // foodKindId 기준 오름차순 정렬
+            });
+            return favoriteFoodKinds;
+        }
         ```
-        curl.exe -X POST "http://localhost:3001/members" -H "Content-Type: application/json" -d '{\"name\":\"안성진\",\"nickname\":\"웬티\",\"gender\":2,\"birth\": \"2000-04-24\",\"location\": \"위치\",\"email\": \"이메일4\",\"phoneNumber\": \"010-0000-0000\", \"favoriteFoodKinds\": [1, 5, 6] }'
-        ```
-    - 결과<br/>
+    - 테스트 결과<br/>
         ![실습-1-회원등록](images/실습-1-회원등록.png)
     - 동일한 이메일로 회원가입하는 경우<br/>
         ![images/실습-1-중복된_회원](images/실습-1-중복된_회원.png)
-        - "중복된 이메일"이라는 에러 메시지가 뜬다. 
-2. **특정 가게의 리뷰 목록 조회 API**
-    - 테스트 (curl)
+        - 회원 이메일로 조회했을 때 이미 데이터가 존재할 경우 에러를 발생시켰다.  
+2. 특정 가게의 리뷰 목록 조회 API
+    - Repository 함수
         ```javascript
-        curl.exe -X GET "http://localhost:3001/restaurants/1/reviews?cursor=5"
+        // 특정 식당의 모든 리뷰 조회
+        export const getAllRestaurantReviews = async (restaurantId, cursor) => {
+            const reviews = await prisma.review.findMany({ // Prisma ORM을 사용하여 review 테이블에서 여러 개의 레코드를 조회한다. 
+                select: {
+                    id: true,
+                    member: true,
+                    restaurant: true,
+                    rating: true,
+                    createdAt: true,
+                    content: true,
+                    status: true
+                },
+                where: { restaurantId: restaurantId, id: { gt: cursor }},
+                orderBy: { id: "asc"},
+                take: 5,
+            })
+            const formattedReviews = reviews.map(review => ({
+                ...review,
+                id: review.id.toString(),
+                member: {
+                    id: review.member.id.toString(),
+                    name: review.member.name,
+                    nickname: review.member.nickname,
+                    birth: review.member.birth,
+                    gender: review.member.gender,
+                    location: review.member.location,
+                    phoneNumber: review.member.phoneNumber
+                },
+                restaurant: {
+                    id: review.restaurant.id.toString(),
+                    name: review.restaurant.name
+                },
+            }));
+
+            return formattedReviews;
+        }
         ```
-    - 결과<br/>
+    - 테스트 결과<br/>
         ![실습-2-특정가게_리뷰목록](images/실습-2-특정가게_리뷰목록.png)
 ### 🎯 핵심 키워드
 ---
