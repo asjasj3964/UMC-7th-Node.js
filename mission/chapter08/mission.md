@@ -544,8 +544,8 @@
             }
             ```
             - 위와 비슷하다.
-        - Swagger UI 확인<br/>
-            <video controls src="videos/swagger-member-controller.mp4" title="Title"></video>
+        - Swagger UI 확인 (영상 첨부가 어려워 유튜브 링크를 남깁니다) <br/>
+            [swagger/member-controller](https://youtu.be/HwodKdLEU1M)
     - restaurant-controller
         - 주석 작성
             ```javascript
@@ -778,7 +778,7 @@
             
             ```
         - Swagger UI 확인<br/>
-            <video controls src="videos/swagger-restaurant-controller.mp4" title="Title"></video>
+            [swagger/restaurant-controller](https://youtu.be/4N1CdttC4AM)
     - mission-controller
         - 주석 작성
             ```javascript
@@ -880,7 +880,7 @@
             }
             ```
         - Swagger UI 확인<br/>
-            <video controls src="videos/swagger-mission-controller.mp4" title="Title"></video>
+            [swagger/mission-controller](https://youtu.be/XBKMEf3MLw8)
         - 주석 작성
             ```javascript
             export const handleMemberMissionRegist = async(req, res, next) => {
@@ -1052,7 +1052,7 @@
             
             ```
         - Swagger UI 확인<br/>
-            <video controls src="videos/swagger-participated-mission-controller.mp4" title="Title"></video>
+            [swagger/participated-mission-controller](https://youtu.be/2yojf3VUJ4o)
     - review-controller
         - 주석 작성
             ```javascript
@@ -1130,7 +1130,7 @@
              
             ```
         - Swagger UI 확인<br/>
-            <video controls src="videos/swagger-review-controller.mp4" title="mission/chapter08/videos/swagger-review-controller.mp4"></video>
+            [swagger/review-controller](https://youtu.be/HHb3ARFzvy8)
 
 <br/><br/>
 - Swagger 작성하면서 알게 된 것
